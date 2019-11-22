@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="car-card">
         <h1>{{ name }}</h1>
         <p class="year">{{ year }}</p>
         <p>{{ desc }}</p>
