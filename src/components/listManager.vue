@@ -2,31 +2,43 @@
     <div class="list-manager-wr">
         <div class="input-wr">
             <label for="name" placeholder="name">Name</label>
-            <input type="text" name='name'>
+            <input type="text" name='name' v-model="name">
         </div>
         <div class="input-wr">
             <label for="desc" placeholder="desc">Description</label>
-            <input type="text" name='desc'>
+            <input type="text" name='desc' v-model="desc">
         </div>
         <div class="input-wr">
             <label for="year" placeholder="year">Year</label>
-            <input type="text" name='year'>
+            <input type="text" name='year' v-model="year">
         </div>
         <div class="btn-wr">
-            <button class="submit" @click="addCar" href="#">Add</button>
+            <button class="submit" @click="submit" href="#">Add</button>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            name: '',
+            desc: '',
+            year: ''
+        }
+    },
     props: {
         addCar: {
             type: Function
         }
     },
     methods: {
-        
+        submit() {
+            /* eslint-disable no-console */
+            console.log('child click');
+            /* eslint-enable no-console */
+            this.$emit('addCar', this.name, this.desc, this.year);
+        }
     },
     watch: {
         

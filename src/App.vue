@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <appListManager :addCar="addCar"></appListManager>
+      <appListManager :addCar="addCar1"></appListManager>
     </header>
     <div class="wrapper">
       <app-car 
@@ -44,7 +44,12 @@ export default {
     appListManager: ListManager
   },
   methods: {
-    addCar( ) {
+    addCar1() {
+
+      /* eslint-disable no-console */
+      console.log('test');
+      /* eslint-enable no-console */
+      
       // const newCar = {
       //   name,
       //   desc,
