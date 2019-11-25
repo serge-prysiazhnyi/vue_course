@@ -1,21 +1,25 @@
 <template>
   <div id="app">
     <header>
-      <appListManager :addCar="addCar1"></appListManager>
+      <h1>Title</h1>
+      <appListManager @add-car="addCar"></appListManager>
     </header>
     <div class="wrapper">
       <app-car 
         v-for="car in cars"
         :key="car.id" 
-        :name="car.name"
-        :desc="car.desc"
+        :make="car.make"
+        :model="car.model"
         :year="car.year"
+        :data-id="car.id"
+        @delete-car-card="deleteCarCard"
       ></app-car>
     </div>
   </div>
 </template>
 
 <script>
+/* eslint-disable no-console */
 import Car from './components/car.vue';
 import ListManager from './components/listManager';
 
@@ -25,15 +29,15 @@ export default {
       cars: [
         {
           id: 0,
-          name: 'test 1',
-          desc: 'test 1',
-          year: 1970,
+          make: 'test 1',
+          model: 'test 1',
+          year: '1970',
         },
         {
           id: 1,
-          name: 'test 2',
-          desc: 'test 2',
-          year: 2019,
+          make: 'test 2',
+          model: 'test 2',
+          year: '2019',
         },
       ]
     }
@@ -44,24 +48,31 @@ export default {
     appListManager: ListManager
   },
   methods: {
-    addCar1() {
-
-      /* eslint-disable no-console */
-      console.log('test');
-      /* eslint-enable no-console */
+    addCar(make, model, year, id) {
+      const newCar = {
+        id,
+        make,
+        model,
+        year
+      }
+      this.cars.push(newCar);
+    },
+    deleteCarCard(id) {
+      let index;
+      this.cars.forEach((o, i)=> {
+        if(o.id == id) {
+          index = i;
+        }
+      });
+      this.cars.splice(index, 1);
       
-      // const newCar = {
-      //   name,
-      //   desc,
-      //   year
-      // }
-      // this.cars.push(newCar);
     }
   },
 }
+/* eslint-enable no-console */
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -69,6 +80,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+header {
+  margin-bottom: 60px;
+
+  h1 {
+    text-transform: uppercase;
+  }
 }
 .wrapper {
   display: flex;

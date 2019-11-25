@@ -1,12 +1,12 @@
 <template>
     <div class="list-manager-wr">
         <div class="input-wr">
-            <label for="name" placeholder="name">Name</label>
-            <input type="text" name='name' v-model="name">
+            <label for="make" placeholder="make">Make</label>
+            <input type="text" name='make' v-model="name">
         </div>
         <div class="input-wr">
-            <label for="desc" placeholder="desc">Description</label>
-            <input type="text" name='desc' v-model="desc">
+            <label for="model" placeholder="model">Model</label>
+            <input type="text" name='model' v-model="model">
         </div>
         <div class="input-wr">
             <label for="year" placeholder="year">Year</label>
@@ -19,31 +19,32 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 export default {
     data() {
         return {
             name: '',
-            desc: '',
-            year: ''
+            model: '',
+            year: '',
+            id: 100
         }
     },
     props: {
-        addCar: {
+        'add-car': {
             type: Function
         }
     },
     methods: {
         submit() {
-            /* eslint-disable no-console */
-            console.log('child click');
-            /* eslint-enable no-console */
-            this.$emit('addCar', this.name, this.desc, this.year);
+            this.id++;
+            this.$emit('add-car', this.name, this.model, this.year, this.id);
         }
     },
-    watch: {
+    // watch: {
         
-    },
+    // },
 }
+/* eslint-enable no-console */
 </script>
 
 <style lang="scss" scoped>
