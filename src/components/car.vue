@@ -1,7 +1,7 @@
 <template>
     <div class="car-card">
-        <h4 class="make">{{ make }}</h4>
-        <h5 class="model">{{ model }}</h5>
+        <h4 class="make">{{ make | uppercase }}</h4>
+        <h5 class="model">{{ model | uppercase }}</h5>
         <p class="year">{{ year }}</p>
         <button class="btn-delete" @click="deleteCarCard">X</button>
     </div>
@@ -28,7 +28,12 @@ export default {
         deleteCarCard(e) {
             this.$emit('delete-car-card', e.target.parentElement.dataset.id);
         }
-    }
+    },
+    // filters: {
+    //     uppercase(value) {
+    //         return value.toUpperCase();
+    //     }
+    // }
 }
 /* eslint-enable no-console */
 
@@ -43,7 +48,7 @@ export default {
 
     }
     .make {
-        text-transform: uppercase;
+        // text-transform: uppercase;
     }
     .model {
         font-size: 16px;

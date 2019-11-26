@@ -15,6 +15,14 @@
         @delete-car-card="deleteCarCard"
       ></app-car>
     </div>
+    <app-test>
+      <h6 slot="title">
+        Lorem, ipsum dolor.
+      </h6>
+      <p slot="text">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, explicabo.
+      </p>
+    </app-test>
   </div>
 </template>
 
@@ -22,6 +30,7 @@
 /* eslint-disable no-console */
 import Car from './components/car.vue';
 import ListManager from './components/listManager';
+import Test from './components/test';
 
 export default {
   data() {
@@ -45,7 +54,8 @@ export default {
   name: 'app',
   components: {
     appCar: Car,
-    appListManager: ListManager
+    appListManager: ListManager,
+    appTest: Test
   },
   methods: {
     addCar(make, model, year, id) {
