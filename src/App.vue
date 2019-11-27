@@ -23,6 +23,10 @@
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, explicabo.
       </p>
     </app-test>
+    <app-list-sample></app-list-sample>
+    <hr>
+    <app-form></app-form>
+    <app-on-off v-model="switched"></app-on-off>
   </div>
 </template>
 
@@ -31,6 +35,9 @@
 import Car from './components/car.vue';
 import ListManager from './components/listManager';
 import Test from './components/test';
+import ListSample from './components/listSample';
+import Form from './components/form';
+import OnOff from './components/onOff';
 
 export default {
   data() {
@@ -48,14 +55,18 @@ export default {
           model: 'test 2',
           year: '2019',
         },
-      ]
+      ],
+      switched: false
     }
   },
   name: 'app',
   components: {
     appCar: Car,
     appListManager: ListManager,
-    appTest: Test
+    appTest: Test,
+    appListSample: ListSample,
+    appForm: Form,
+    appOnOff: OnOff
   },
   methods: {
     addCar(make, model, year, id) {
@@ -96,6 +107,17 @@ header {
 
   h1 {
     text-transform: uppercase;
+  }
+}
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding-bottom: 25px;
+  @media screen and (max-width:1366px) {
+    max-width: 1024px;
+  }
+  @media screen and (max-width:1024px) {
+    max-width: 90%;
   }
 }
 .wrapper {
