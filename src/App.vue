@@ -1,39 +1,43 @@
 <template>
   <div id="app">
     <header>
-      <appListManager :addCar="addCar1"></appListManager>
+      <appListManager @submit="addCar"></appListManager>
     </header>
     <div class="wrapper">
       <app-car 
         v-for="car in cars"
         :key="car.id" 
-        :name="car.name"
-        :desc="car.desc"
+        :make="car.make"
+        :model="car.model"
         :year="car.year"
+        :data-id="car.id"
+        @closeCard="closeCard"
       ></app-car>
     </div>
   </div>
 </template>
 
 <script>
+/* eslint-disable no-console */
 import Car from './components/car.vue';
 import ListManager from './components/listManager';
 
 export default {
   data() {
     return {
+      counter: 999,
       cars: [
         {
           id: 0,
-          name: 'test 1',
-          desc: 'test 1',
-          year: 1970,
+          make: 'Ford',
+          model: 'Mustang',
+          year: '1970',
         },
         {
           id: 1,
-          name: 'test 2',
-          desc: 'test 2',
-          year: 2019,
+          make: 'Dodge',
+          model: 'Ram 1500',
+          year: '2019',
         },
       ]
     }
@@ -44,18 +48,17 @@ export default {
     appListManager: ListManager
   },
   methods: {
-    addCar1() {
-
-      /* eslint-disable no-console */
-      console.log('test');
-      /* eslint-enable no-console */
-      
-      // const newCar = {
-      //   name,
-      //   desc,
-      //   year
-      // }
-      // this.cars.push(newCar);
+    addCar(make, model, year) {
+      const newCar = {
+        id: this.counter++,
+        make,
+        model,
+        year
+      }
+      this.cars.push(newCar);
+    },
+    closeCard(id) {
+      this.cars = this.cars.filter((item) => item.id != id);
     }
   },
 }

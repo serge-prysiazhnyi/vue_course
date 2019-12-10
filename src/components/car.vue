@@ -1,37 +1,68 @@
 <template>
     <div class="car-card">
-        <h1>{{ name }}</h1>
+        <h4 class="make">{{ make }}</h4>
+        <p class="model">{{ model }}</p>
         <p class="year">{{ year }}</p>
-        <p>{{ desc }}</p>
+        <button class="close-btn" @click="close($event)">X</button>
     </div>
 </template>
 
 <script>
+/* eslint-disable no-console */
 export default {
     props: {
-        name: {
+        make: {
             type: String,
             default: ''
         },
-        desc: {
+        model: {
             type: String,
             default: ''
         },
         year: {
-            type: Number
+            type: String,
+            default: ''
+        }
+    },
+    methods: {
+        close($event) {
+            const id = parseInt($event.currentTarget.parentNode.dataset.id);
+            this.$emit('closeCard', id);
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    h1 {
+    .car-card {
+        padding: 35px;
+        border-radius: 5px;
+        position: relative;
+        box-shadow: 10px 10px 30px 0px rgba(209,209,209,1);
+    }
+    .make {
         text-transform: uppercase;
-        p {
-            font-size: 16px;
-        }
-        .year {
-            font-size: 20px;
+    }
+    .model {
+        font-size: 16px;
+    }
+    .year {
+        font-size: 20px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        color: red;
+        background: transparent;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+            color: white;
+            background: red;
         }
     }
 </style>
