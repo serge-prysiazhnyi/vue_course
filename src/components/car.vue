@@ -1,9 +1,9 @@
 <template>
     <div class="car-card">
-        <h4 class="make">{{ make }}</h4>
-        <p class="model">{{ model }}</p>
+        <h4 class="make">{{ make | uppercase }}</h4>
+        <h5 class="model">{{ model | uppercase }}</h5>
         <p class="year">{{ year }}</p>
-        <button class="close-btn" @click="close($event)">X</button>
+        <button class="btn-delete" @click="close">X</button>
     </div>
 </template>
 
@@ -29,19 +29,20 @@ export default {
             const id = parseInt($event.currentTarget.parentNode.dataset.id);
             this.$emit('closeCard', id);
         }
-    }
+    },
 }
 </script>
 
 <style lang="scss" scoped>
     .car-card {
-        padding: 35px;
-        border-radius: 5px;
         position: relative;
-        box-shadow: 10px 10px 30px 0px rgba(209,209,209,1);
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 5px 5px 35px 0px rgba(186,186,186,1);
+
     }
     .make {
-        text-transform: uppercase;
+        // text-transform: uppercase;
     }
     .model {
         font-size: 16px;
@@ -49,20 +50,15 @@ export default {
     .year {
         font-size: 20px;
     }
-
-    .close-btn {
+    .btn-delete {
         position: absolute;
-        top: 25px;
-        right: 25px;
-        color: red;
-        background: transparent;
+        top: 15px;
+        right: 15px;
+        padding: 5px;
+        color: #ffffff;
+        background-color: red;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-
-        &:hover {
-            color: white;
-            background: red;
-        }
     }
 </style>

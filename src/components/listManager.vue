@@ -19,6 +19,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 export default {
     data() {
         return {
@@ -39,10 +40,11 @@ export default {
             }
         }
     },
-    watch: {
+    // watch: {
         
-    },
+    // },
 }
+/* eslint-enable no-console */
 </script>
 
 <style lang="scss" scoped>

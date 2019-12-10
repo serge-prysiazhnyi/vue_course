@@ -1,7 +1,22 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
+// import colorDerective from './color';
 
-Vue.config.productionTip = false
+/* eslint-disable no-console */
+// todo
+// Vue.derective('colored');
+
+Vue.filter('uppercase', (value) => {
+  return value.toUpperCase();
+})
+
+// Vue.mixin({
+//   beforeCreate() {
+//     console.log('beforeCreate');
+//   },
+// })
+
+Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),
