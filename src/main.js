@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
+import VueResource from 'vue-resource';
 // import colorDerective from './color';
 
 /* eslint-disable no-console */
@@ -8,6 +9,15 @@ import App from './App.vue';
 
 Vue.filter('uppercase', (value) => {
   return value.toUpperCase();
+})
+
+Vue.use(VueResource);
+
+Vue.http.options.root = 'http://localhost:3000/';
+
+Vue.http.interceptors.push(request =>{
+  
+  request.headers.set('Auth', 'token ' + Math.random())
 })
 
 // Vue.mixin({

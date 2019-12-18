@@ -1,0 +1,61 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "cars": [
+    {
+      "name": "test-a",
+      "year": 2222,
+      "id": 1
+    },
+    {
+      "name": "test-a",
+      "year": 2020,
+      "id": 2
+    },
+    {
+      "name": "",
+      "year": "",
+      "id": 3
+    },
+    {
+      "name": "test-a",
+      "year": 2018,
+      "id": 4
+    },
+    {
+      "name": "test-2",
+      "year": 2015,
+      "id": 5
+    },
+    {
+      "name": "axious-test",
+      "year": 2019,
+      "id": 6
+    },
+    {
+      "name": "214",
+      "year": 235,
+      "id": 7
+    },
+    {
+      "name": "test-a",
+      "year": 2014,
+      "id": 8
+    }
+  ]
+}
