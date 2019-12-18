@@ -1,11 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     
   </div>
 </template>
 
 <script>
-/* eslint-disable*/
+/* eslint-disable */
+/* eslint-disable no-console */
 
 export default {
   data() {
