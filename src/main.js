@@ -1,5 +1,9 @@
 import Vue from 'vue';
 import App from './App.vue';
+import vuetify from './plugins/vuetify';
+import router from './router';
+// ???
+// import 'vuetify/dist/vuetify.min.css'
 
 /* eslint-disable no-console */
 
@@ -7,5 +11,7 @@ import App from './App.vue';
 Vue.config.productionTip = false;
 
 new Vue({
-  render: h => h(App),
+  vuetify,
+  router,
+  render: h => h(App)
 }).$mount('#app')
