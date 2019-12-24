@@ -8,7 +8,7 @@ export default {
             return state.loading;
         },
         getError(state) {
-            return state.eror;
+            return state.error;
         }
     },
     actions: {

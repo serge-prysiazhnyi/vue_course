@@ -15,6 +15,9 @@ export default {
     getters: {
         getUser(state) {
             return state.user;
+        },
+        isUserLoggedIn(state) {
+            return state.user !== null;
         }
     },
     actions: {
@@ -29,10 +32,25 @@ export default {
             }
             catch(error) {
                 commit('setLoading', false);
-                commit('setError', true);
+                commit('setError', error);
                 throw error
             }
-        }
+        },
+        async loginUser({commit}, {email, password}) {
+            commit('clearError');
+            commit('setLoading', true);
+            
+            try {
+                const user = await firebase.auth().signInWithEmailAndPassword(email, password)
+                commit('setUser', new User(user.iud));
+                commit('setLoading', false);
+            }
+            catch(error) {
+                commit('setLoading', false);
+                commit('setError', error);
+                throw error
+            }
+        },
     },
     mutations: {
         setUser(state, payload) {

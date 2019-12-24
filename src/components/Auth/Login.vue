@@ -51,6 +51,8 @@
                     color="success"
                     dark 
                     @click="onSubmit" 
+                    :loading="loading"
+                    :disabled="loading || !valid"
                 >Login</v-btn>
               </v-card-actions>
             </v-card>
@@ -78,6 +80,11 @@ export default {
             ]
         }
     },
+    computed: {
+      loading() {
+        return this.$store.getters.getLoading;
+      }
+    },
     methods: {
         onSubmit() {
             if (this.$refs.form.validate()) {
@@ -86,7 +93,11 @@ export default {
                     password: this.password
                 }
 
-                console.log(user);
+                this.$store.dispatch('loginUser', user)
+                  .then(()=>{
+                    this.$router.push('/');
+                  })
+                  .catch(error => console.log(error))
             }
         }
     }

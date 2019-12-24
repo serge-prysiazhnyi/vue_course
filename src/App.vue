@@ -65,6 +65,25 @@
       <v-content>
         <router-view></router-view>
       </v-content>
+
+      <template v-if="error">
+        <v-snackbar
+          color="error"
+          :multi-line="true"
+          :timeout="10000"
+          :bottom="true"
+          :value="true"
+        >
+          {{error}}
+          <v-btn
+            dark
+            text
+            @click="closeError"
+          >
+            Close
+          </v-btn>
+        </v-snackbar>
+      </template>
     </v-app>
   </div>
 </template>
@@ -103,7 +122,34 @@
           icon: 'bookmark-plus-outline',
           url: '/list'
         },
-      ]
+      ],
     }),
+    computed: {
+      error() {
+        return this.$store.getters.getError;
+      },
+      isUserLoggedIn() {
+        return this.$store.getters.isUserLoggedIn;
+      },
+      links() {
+        if(this.isUserLoggedIn) {
+          return [
+            {title: 'Orders', icon: 'cart', url: '/orders'},
+            {title: 'New ad',icon: 'card-bulleted-outline',url: '/new'},
+            {title: 'My ads',icon: 'bookmark-plus-outline',url: '/list'},
+          ]
+        } else {
+          return [
+            {title: 'Login', icon: 'account-circle', url: '/login'},
+            {title: 'Registration', icon: 'account-plus', url: '/registration'},
+          ]
+        }
+      }
+    },
+    methods: {
+      closeError() {
+        this.$store.dispatch('clearError');
+      }
+    }
   };
 </script>
