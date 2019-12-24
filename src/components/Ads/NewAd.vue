@@ -85,11 +85,14 @@ export default {
             if(this.$refs.form.validate()) {
                 const ad = {
                     title: this.title,
-                    description: this.description,
-                    promo: this.promo
+                    desc: this.description,
+                    promo: this.promo,
+                    imageSrc: 'https://images.unsplash.com/photo-1555796861-b29396df890e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
                 }
 
                 console.log(ad);
+
+                this.$store.dispatch('createAd', ad);
             }
         }
     }

@@ -4,7 +4,7 @@
             <v-row xs="12">
                 <v-carousel>
                     <v-carousel-item
-                    v-for="(ad,i) in ads"
+                    v-for="(ad,i) in promoAds"
                     :key="i"
                     :src="ad.imageSrc"
                     reverse-transition="fade-transition"
@@ -71,36 +71,15 @@
 export default {
     data() {
         return {
-            ads: [
-                {
-                    title: 'First ad',
-                    desc: 'lorem',
-                    promo: false,
-                    imageSrc: 'https://images.unsplash.com/photo-1575138312433-d42e9f176f6b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-                    id: '1'
-                },
-                {
-                    title: 'Second ad',
-                    desc: 'lorem',
-                    promo: false,
-                    imageSrc: 'https://images.unsplash.com/photo-1575149536487-4c9ac49fc258?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-                    id: '2'
-                },
-                {
-                    title: 'Third ad',
-                    desc: 'lorem',
-                    promo: false,
-                    imageSrc: 'https://images.unsplash.com/photo-1538097304804-2a1b932466a9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjI0MX0&auto=format&fit=crop&w=1650&q=80',
-                    id: '3'
-                },
-                {
-                    title: 'Fourth ad',
-                    desc: 'lorem',
-                    promo: false,
-                    imageSrc: 'https://images.unsplash.com/photo-1576807126558-7d2fcb6f6180?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-                    id: '4'
-                },
-            ]
+            
+        }
+    },
+    computed: {
+        ads() {
+            return this.$store.getters.getAds;
+        },
+        promoAds() {
+            return this.$store.getters.getPromoAds;
         }
     }
 }

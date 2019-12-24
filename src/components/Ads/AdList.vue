@@ -6,7 +6,7 @@
 
                 <v-card 
                     class="elevation-8 mb-5"
-                    v-for="ad in ads"
+                    v-for="ad in myAds"
                     :key="ad.id"
                 >
                     <v-row>
@@ -40,15 +40,12 @@
 export default {
     data() {
         return {
-            ads: [
-                {
-                    title: 'First ad',
-                    desc: 'lorem',
-                    promo: false,
-                    imageSrc: 'https://images.unsplash.com/photo-1575138312433-d42e9f176f6b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-                    id: '1'
-                },
-            ]
+            
+        }
+    },
+    computed: {
+        myAds() {
+            return this.$store.getters.getMyAds;
         }
     }
 }

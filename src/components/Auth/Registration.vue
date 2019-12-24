@@ -21,7 +21,7 @@
                 <v-toolbar-title>Registration form</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form ref="form" :lazy-validation="lazy" v-model="valid">
+                <v-form ref="form" :lazy-validation="true" v-model="valid">
                   <v-text-field
                     :rules="emailRules"
                     required
@@ -62,6 +62,8 @@
                     color="success"
                     dark 
                     @click="onSubmit" 
+                    :loading="loading"
+                    :disabled="loading || !valid"
                 >Create account</v-btn>
               </v-card-actions>
             </v-card>
@@ -94,6 +96,11 @@ export default {
             ]
         }
     },
+    computed: {
+      loading() {
+        return this.$store.getters.getLoading;
+      }
+    },
     methods: {
         onSubmit() {
             if (this.$refs.form.validate()) {
@@ -101,8 +108,11 @@ export default {
                     email: this.email,
                     password: this.password
                 }
-
-                console.log(user);
+                this.$store.dispatch('registerUser', user)
+                  .then(()=>{
+                    this.$router.push('/')
+                  })
+                  .catch((error)=> console.log(error))
             }
         }
     }
