@@ -9,7 +9,6 @@
             :to="link.url"
           >
             <v-list-item-icon>
-              <!--  v-if="item.icon"  -->
               <v-icon>mdi-{{link.icon}}</v-icon>
             </v-list-item-icon>
 
@@ -17,6 +16,14 @@
               <v-list-item-title v-text="link.title"></v-list-item-title>
             </v-list-item-content>
 
+          </v-list-item>
+          <v-list-item @click="onLogout" v-if="isUserLoggedIn">
+            <v-list-item-icon>
+              <v-icon>mdi-exit-to-app</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -32,11 +39,21 @@
 
         <v-btn 
           icon 
-          v-for="(link, id) in links" 
-          :key="id" :to="link.url"
+          v-for="(link, id) of links" 
+          :key="id" 
+          :to="link.url"
           class="hidden-sm-and-down"
         >
           <v-icon>mdi-{{link.icon}}</v-icon>
+        </v-btn>
+
+        <v-btn
+         icon
+         @click="onLogout"
+         v-if="isUserLoggedIn"
+         class="hidden-sm-and-down"
+        >
+          <v-icon>mdi-exit-to-app</v-icon>
         </v-btn>
 
         <v-menu
@@ -89,6 +106,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
   export default {
     name: 'App',
     components: {
@@ -96,33 +114,7 @@
     },
     data: () => ({
       drawer: false,
-      links: [
-        {
-          title: 'Login',
-          icon: 'account-circle',
-          url: '/login'
-        },
-        {
-          title: 'Registration',
-          icon: 'account-plus',
-          url: '/registration'
-        },
-        {
-          title: 'Orders',
-          icon: 'cart',
-          url: '/orders'
-        },
-        {
-          title: 'New ad',
-          icon: 'card-bulleted-outline',
-          url: '/new'
-        },
-        {
-          title: 'My ads',
-          icon: 'bookmark-plus-outline',
-          url: '/list'
-        },
-      ],
+      
     }),
     computed: {
       error() {
@@ -149,6 +141,10 @@
     methods: {
       closeError() {
         this.$store.dispatch('clearError');
+      },
+      onLogout() {
+        this.$store.dispatch('logoutUser');
+        this.$router.push('/');
       }
     }
   };

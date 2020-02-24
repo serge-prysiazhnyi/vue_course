@@ -18,7 +18,8 @@ export default {
         },
         isUserLoggedIn(state) {
             return state.user !== null;
-        }
+        },
+
     },
     actions: {
         async registerUser({commit}, {email, password}) {
@@ -51,6 +52,13 @@ export default {
                 throw error
             }
         },
+        autoLoginUser({commit}, payload) {
+            commit('setUser', new User(payload.uid));
+        },
+        logoutUser({commit}) {
+            firebase.auth().signOut();
+            commit('setUser', null);
+        }
     },
     mutations: {
         setUser(state, payload) {
