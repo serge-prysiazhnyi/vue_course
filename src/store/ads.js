@@ -1,37 +1,20 @@
 /* eslint-disable no-console */
+import * as fb from "firebase";
+
+class Ad {
+    constructor(title, description, ownerId, imageSrc = '', promo = false, id = null) {
+        this.title = title;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.imageSrc = imageSrc;
+        this.promo = promo;
+        this.id = id;
+    }
+}
 
 export default {
     state: {
-        ads: [
-            {
-                title: 'First ad',
-                desc: 'lorem',
-                promo: true,
-                imageSrc: 'https://images.unsplash.com/photo-1575138312433-d42e9f176f6b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-                id: '1'
-            },
-            {
-                title: 'Second ad',
-                desc: 'lorem',
-                promo: true,
-                imageSrc: 'https://images.unsplash.com/photo-1575149536487-4c9ac49fc258?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-                id: '2'
-            },
-            {
-                title: 'Third ad',
-                desc: 'lorem',
-                promo: false,
-                imageSrc: 'https://images.unsplash.com/photo-1538097304804-2a1b932466a9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjI0MX0&auto=format&fit=crop&w=1650&q=80',
-                id: '3'
-            },
-            {
-                title: 'Fourth ad',
-                desc: 'lorem',
-                promo: false,
-                imageSrc: 'https://images.unsplash.com/photo-1576807126558-7d2fcb6f6180?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-                id: '4'
-            },
-        ]
+        ads: []
     },
     getters: {
         getAds(state) {
@@ -40,27 +23,118 @@ export default {
         getPromoAds(state) {
             return state.ads.filter((ad)=>ad.promo === true);
         },
-        getMyAds(state) {
-            return state.ads;
+        getMyAds(state, getters) {
+            return state.ads.filter((ad) => {
+                // console.log("getMyAds -> ad.ownerId", ad.ownerId)
+                // console.log("getMyAds -> getters.user.id", getters.getUser)
+                return ad.ownerId === getters.getUser;
+            });
         },
         getAdById(state) {
             return (id) => {
-                console.log("TCL: getAdById -> id", id)
-                
-                console.log("TCL: getAdById -> state.ads", state.ads.filter((ad) => ad.id === id))
                 return state.ads.find((ad) => ad.id === id);
             }
         }
     },
     actions: {
-        createAd({commit}, payload) {
-            payload.id = Math.round(Math.random * (1000 - 10) + 10).toString();
-            commit('createAd', payload)
+        async createAd({commit, getters}, payload) {
+            commit('clearError');
+            commit('setLoading', true);
+
+            const image = payload.image;
+
+            try {
+                const newAd = new Ad(
+                    payload.title,
+                    payload.description,
+                    getters.getUser.id,
+                    '',
+                    payload.promo
+                );
+                const ad = await fb.database().ref('ads').push(newAd);
+                const imageExt = image.name.slice(image.name.lastIndexOf('.'));
+                const fileData = await fb.storage().ref(`ads/${ad.key}.${imageExt}`).put(image);
+                const imageSrc = await fb.storage().ref().child(fileData.ref.fullPath).getDownloadURL();
+
+                await fb.database().ref('ads').child(ad.key).update({
+                    imageSrc
+                })
+
+                commit('createAd', {
+                    ...newAd,
+                    imageSrc,
+                    id: ad.key
+                })
+                commit('setLoading', false);
+            }
+            catch (error) {
+                commit('setError', error.message);
+                commit('setLoading', false);
+                throw error;
+            }
+        },
+        async fetchAds({commit}) {
+            commit('clearError');
+            commit('setLoading', true);
+
+            const resultAds = [];
+
+            try {
+                const fbVal = await fb.database().ref('ads').once('value');
+                const ads = fbVal.val();
+                Object.keys(ads).forEach((key) => {
+                    const ad = ads[key];
+                    resultAds.push(
+                        new Ad(ad.title, ad.description, ad.ownerId, ad.imageSrc, ad.promo, key)
+                    );
+                })
+                commit('loadAds', resultAds);
+                commit('setLoading', false);
+            }
+            catch(error) {
+                commit('setError', error.message);
+                commit('setLoading', false);
+                throw error
+            }
+        },
+        async updateAd({commit}, {title, description, id}) {
+            commit('clearError');
+            commit('setLoading', true);
+
+            try {
+                await fb.database().ref('ads').child(id).update({
+                    title,
+                    description
+                });
+                commit('updateAd', {
+                    title,
+                    description,
+                    id
+                });
+                commit('setLoading', false);
+            }
+            catch (error) {
+                commit('setError', error.message);
+                commit('setLoading', false);
+                throw error;
+            }
         }
     },
     mutations: {
         createAd(state, payload) {
             state.ads.push(payload);
+        },
+        loadAds(state, payload) {
+            state.ads = payload;
+        },
+        updateAd(state, {title, description, id}) {
+            
+            const ad = state.ads.find((item) => {
+                return item.id === id
+            });
+
+            ad.title = title;
+            ad.description = description;
         }
     }
 }

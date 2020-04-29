@@ -31,16 +31,24 @@
                     rounded 
                     color="primary" 
                     dark
+                    @click="triggerUpload"
                 >
                     Upload image
                     <v-icon right dark>mdi-cloud-upload</v-icon>
                 </v-btn>
-                
+                <input 
+                    ref="fileInput" 
+                    type="file" 
+                    style="display:none" 
+                    accept="image/*"
+                    @change="onFileChange"
+                >
             </v-col>
         </v-row>
         <v-row>
             <v-col xs="12">
-                <img src="https://images.unsplash.com/photo-1576807126558-7d2fcb6f6180?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" height="150">
+                <img :src="imageSrc" v-if="imageSrc">
+
             </v-col>
         </v-row>
         <v-row>
@@ -55,11 +63,12 @@
             <v-col xs="12">
                 <v-spacer></v-spacer>
                 <v-btn 
+                    :loading='loading'
                     rounded 
                     color="success" 
                     dark
                     @click="createAd"
-                    :disabled="!valid"
+                    :disabled="(!valid || !image) || loading"
                 >
                     Create ad
                 </v-btn>
@@ -77,28 +86,55 @@ export default {
             title: '',
             description: '',
             promo: false,
-            valid: false
+            valid: false,
+            image: null,
+            imageSrc: ''
+        }
+    },
+    computed: {
+        loading() {
+            return this.$store.getters.getLoading;
         }
     },
     methods: {
         createAd() {
-            if(this.$refs.form.validate()) {
+            if(this.$refs.form.validate() && this.image) {
                 const ad = {
                     title: this.title,
-                    desc: this.description,
+                    description: this.description,
                     promo: this.promo,
-                    imageSrc: 'https://images.unsplash.com/photo-1555796861-b29396df890e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
+                    image: this.image
                 }
 
-                console.log(ad);
+                this.$store.dispatch('createAd', ad)
+                .then(() => {
+                    this.$router.push('/list')
+                })
+                .catch(() => {
 
-                this.$store.dispatch('createAd', ad);
+                });
             }
+        },
+        triggerUpload() {
+            this.$refs.fileInput.click();
+        },
+        onFileChange(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.imageSrc = reader.result;
+            }
+            this.image = file;
+            reader.readAsDataURL(file);
         }
     }
 }
 </script>
 
 <style lang="scss">
-    
+    img {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+    }
 </style>
