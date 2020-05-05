@@ -46,19 +46,13 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
+                                class="mr-3"
                                 color="orange"
-                                text
                                 :to="'/ad/' + ad.id"
                             >
                                 Open
                             </v-btn>
-
-                            <v-btn
-                                color="primary"
-                                text
-                            >
-                                Buy
-                            </v-btn>
+                            <app-buy-modal :ad="ad"></app-buy-modal>
                         </v-card-actions>
                     </v-card>
                 </v-col>

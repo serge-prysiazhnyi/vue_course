@@ -1,6 +1,13 @@
 <template>
     <v-container>
-        <v-row>
+        <v-row xs="12" v-if="loading">
+            <v-col>
+                <div class="text-center">
+                    <v-progress-circular indeterminate></v-progress-circular>
+                </div>
+            </v-col>
+        </v-row>
+        <v-row v-else-if="!loading && orders.length != 0">
             <v-col xs="12" md="6">
                 <h1>Orders</h1>
                 <v-list
@@ -19,7 +26,7 @@
                                 <v-checkbox
                                     :input-value="order.done"
                                     color="success"
-                                    @click="toggleOrder(order)"
+                                    @click="markDone(order)"
                                 ></v-checkbox>
                                 </v-list-item-action>
 
@@ -36,34 +43,34 @@
                 </v-list>
             </v-col>
         </v-row>
+        <v-row v-else>
+            <h3>You nave no orders</h3>
+        </v-row>
     </v-container>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            orders: [
-                {
-                    id: '1',
-                    name: 'first order',
-                    phone: '8-921-121-12-42',
-                    adId: '1',
-                    done: false
-                },
-                {
-                    id: '2',
-                    name: 'second order',
-                    phone: '8-921-142-42-42',
-                    adId: '2',
-                    done: false
-                }
-            ]
+/* eslint-disable no-console */
+
+    created() {
+        this.$store.dispatch('fetchOrders');
+    },
+    computed: {
+        loading() {
+            return this.$store.getters.getLoading;
+        },
+        orders() {
+            return this.$store.getters.orders;
         }
     },
     methods: {
-        toggleOrder(order) {
-            order.done = true;
+        markDone(order) {
+            this.$store.dispatch('markOrderDone', order.id)
+                .then(() => {
+                    order.done = true;
+                })
+                .catch(() => {})
         }
     }
 }

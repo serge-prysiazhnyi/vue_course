@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as fb from 'firebase'
 
 class User {
@@ -65,7 +66,7 @@ export default {
         }
     },
     getters: {
-        user(state) {
+        getUser(state) {
             return state.user
         },
         isUserLoggedIn(state) {

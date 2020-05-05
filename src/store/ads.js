@@ -25,9 +25,7 @@ export default {
         },
         getMyAds(state, getters) {
             return state.ads.filter((ad) => {
-                // console.log("getMyAds -> ad.ownerId", ad.ownerId)
-                // console.log("getMyAds -> getters.user.id", getters.getUser)
-                return ad.ownerId === getters.getUser;
+                return ad.ownerId === getters.getUser.id;
             });
         },
         getAdById(state) {

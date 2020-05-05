@@ -5,12 +5,12 @@ import router from './router';
 import store from './store';
 import * as firebase from 'firebase';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
-
-// ???
-// import 'vuetify/dist/vuetify.min.css'
+import BuyModalComponent from '@/components/Shared/BuyModal';
+import './stylus/main.styl';
 
 /* eslint-disable no-console */
 
+Vue.component('app-buy-modal', BuyModalComponent);
 
 Vue.config.productionTip = false;
 
